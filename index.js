@@ -7,7 +7,7 @@ import errorHandler from './middlewares/errorHandler.js';
 import './db/test.js'
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV !== 'production') {
   const morgan = await import('morgan');
