@@ -1,37 +1,27 @@
-import Post from '../models/Post.js'
+import Post from "../models/Post.js";
 
-import asyncHandler from '../middlewares/asyncHandler.js'
-import ErrorResponse from '../utils/ErrorResponse.js'
-
+import asyncHandler from "../middlewares/asyncHandler.js";
+import ErrorResponse from "../utils/ErrorResponse.js";
 
 export const getAllPosts = asyncHandler(async (req, res) => {
-
-    const posts = await Post.find().populate('user');
-
-    res.status(201).json(posts);
-
-})
+    const posts = await Post.find().populate("user");
+    res.status(200).json(posts);
+});
 
 export const getSinglePost = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const post = await Post.findById(id).populate('user');
+    const post = await Post.findById(id).populate("user");
     if (!post) throw new ErrorResponse(`Post with id of ${id} not found`, 404);
     res.status(200).json(post);
-
-})
+});
 
 export const createPost = asyncHandler(async (req, res) => {
-
     const { user, text } = req.body;
-    if (!text || !user)
-        throw new ErrorResponse('All fields are required', 400);
-    const newPost = await Post.create({ user, text })
-    const newPostUser = await newPost.populate("user").execPopulate()
-    res.status(201).json(newPostUser);
-
-})
-
-
+    if (!text || !user) throw new ErrorResponse("All fields are required", 400);
+    const newPost = await Post.create({ user, text });
+    const newPostWithUser = await newPost.populate("user").execPopulate();
+    res.status(201).json(newPostWithUser);
+});
 
 // export const updatePost = asyncHandler(async (req, res) => {
 //     const { id } = req.params;
@@ -47,9 +37,6 @@ export const createPost = asyncHandler(async (req, res) => {
 //     res.status(201).json(newpost);
 
 // });
-
-
-
 
 // export const deletePost = asyncHandler(async (req, res) => {
 //     const { id } = req.params;
